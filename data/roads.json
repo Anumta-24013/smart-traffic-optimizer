@@ -1,0 +1,60 @@
+{
+  "roads": [
+    {
+      "from": 1,
+      "to": 2,
+      "distance": 3.5,
+      "base_time": 8,
+      "name": "Liberty to Kalma"
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "distance": 5.2,
+      "base_time": 12,
+      "name": "Kalma to Mall Road"
+    },
+    {
+      "from": 1,
+      "to": 4,
+      "distance": 2.1,
+      "base_time": 5,
+      "name": "Liberty to Jail Road"
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "distance": 8.3,
+      "base_time": 18,
+      "name": "Jail Road to Township"
+    },
+    {
+      "from": 2,
+      "to": 5,
+      "distance": 6.7,
+      "base_time": 15,
+      "name": "Kalma to Township"
+    },
+    {
+      "from": 2,
+      "to": 6,
+      "distance": 1.2,
+      "base_time": 3,
+      "name": "Kalma to Gulberg"
+    },
+    {
+      "from": 6,
+      "to": 8,
+      "distance": 4.5,
+      "base_time": 10,
+      "name": "Gulberg to Model Town"
+    },
+    {
+      "from": 7,
+      "to": 5,
+      "distance": 7.8,
+      "base_time": 16,
+      "name": "Ferozepur to Township"
+    }
+  ]
+}

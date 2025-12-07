@@ -1,0 +1,53 @@
+{
+  "junctions": [
+    {
+      "id": 1,
+      "name": "Liberty Chowk",
+      "lat": 31.5096,
+      "lng": 74.3442
+    },
+    {
+      "id": 2,
+      "name": "Kalma Chowk",
+      "lat": 31.5204,
+      "lng": 74.3587
+    },
+    {
+      "id": 3,
+      "name": "Mall Road",
+      "lat": 31.5656,
+      "lng": 74.3242
+    },
+    {
+      "id": 4,
+      "name": "Jail Road",
+      "lat": 31.5497,
+      "lng": 74.3436
+    },
+    {
+      "id": 5,
+      "name": "Township",
+      "lat": 31.4697,
+      "lng": 74.3973
+    },
+    {
+      "id": 6,
+      "name": "Gulberg Main",
+      "lat": 31.5203,
+      "lng": 74.3587
+    },
+    {
+      "id": 7,
+      "name": "Ferozepur Road",
+      "lat": 31.4343,
+      "lng": 74.2963
+    },
+    {
+      "id": 8,
+      "name": "Model Town",
+      "lat": 31.4843,
+      "lng": 74.3154
+    }
+  ]
+}
+
