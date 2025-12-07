@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Traffic Route Optimizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🚗 Smart Traffic Route Optimizer</h1>
+                <p>Find the fastest route in Lahore with real-time traffic updates</p>
+            </div>
+            <div class="status" id="serverStatus">
+                <span class="status-indicator"></span>
+                <span id="statusText">Connecting...</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Route Finder Section -->
+            <div class="card">
+                <h2>🗺️ Find Your Route</h2>
+                
+                <div class="form-group">
+                    <label for="sourceSelect">
+                        <span class="label-icon">📍</span>
+                        Source Location
+                    </label>
+                    <select id="sourceSelect" class="input-select">
+                        <option value="">Select starting point...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="destSelect">
+                        <span class="label-icon">🎯</span>
+                        Destination
+                    </label>
+                    <select id="destSelect" class="input-select">
+                        <option value="">Select destination...</option>
+                    </select>
+                </div>
+
+                <button id="findRouteBtn" class="btn btn-primary">
+                    Find Shortest Route
+                </button>
+            </div>
+
+            <!-- Results Section -->
+            <div class="card results-card" id="resultsCard" style="display: none;">
+                <h2>✅ Route Found!</h2>
+                
+                <div class="route-info">
+                    <div class="info-box">
+                        <div class="info-label">⏱️ Total Time</div>
+                        <div class="info-value" id="totalTime">-</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">📏 Distance</div>
+                        <div class="info-value" id="totalDistance">-</div>
+                    </div>
+                </div>
+
+                <div class="route-path">
+                    <h3>🛣️ Your Route:</h3>
+                    <div id="pathDisplay" class="path-display"></div>
+                </div>
+            </div>
+
+            <!-- Traffic Update Section -->
+            <div class="card">
+                <h2>🚦 Update Traffic Conditions</h2>
+                
+                <div class="form-group">
+                    <label for="trafficFrom">From Junction</label>
+                    <select id="trafficFrom" class="input-select">
+                        <option value="">Select junction...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="trafficTo">To Junction</label>
+                    <select id="trafficTo" class="input-select">
+                        <option value="">Select junction...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="trafficLevel">Traffic Level</label>
+                    <select id="trafficLevel" class="input-select">
+                        <option value="1.0">🟢 Clear (1.0x)</option>
+                        <option value="1.5">🟡 Light (1.5x)</option>
+                        <option value="2.0">🟠 Moderate (2.0x)</option>
+                        <option value="3.0">🔴 Heavy (3.0x)</option>
+                        <option value="5.0">⛔ Severe (5.0x)</option>
+                    </select>
+                </div>
+
+                <button id="updateTrafficBtn" class="btn btn-secondary">
+                    Update Traffic
+                </button>
+            </div>
+
+            <!-- All Junctions List -->
+            <div class="card">
+                <h2>📍 Available Junctions</h2>
+                <div id="junctionsList" class="junctions-grid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

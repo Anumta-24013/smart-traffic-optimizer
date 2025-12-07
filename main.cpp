@@ -10,10 +10,12 @@ using namespace std;
 using json = nlohmann::json;
 
 // Load junctions from JSON file
-void loadJunctions(BTree& btree, HashTable& hashtable) {
+void loadJunctions(BTree& btree, HashTable& hashtable) 
+{
     ifstream file("data/junctions.json");
     
-    if (!file.is_open()) {
+    if (!file.is_open()) 
+    {
         cout << "[ERROR] Could not open junctions.json!" << endl;
         return;
     }
@@ -21,26 +23,32 @@ void loadJunctions(BTree& btree, HashTable& hashtable) {
     json data;
     file >> data;
     
-    for (auto& j : data["junctions"]) {
+    for (auto& j : data["junctions"]) 
+    {
         int id = j["id"];
         string name = j["name"];
+    
         double lat = j["lat"];
         double lng = j["lng"];
         
         Junction junction(id, name, lat, lng);
+    
         btree.insert(name, id);
         hashtable.insert(junction);
     }
     
     file.close();
+    
     cout << "[OK] Loaded " << data["junctions"].size() << " junctions from JSON" << endl;
 }
 
 // Load roads from JSON file
-void loadRoads(Graph& graph) {
+void loadRoads(Graph& graph) 
+{
     ifstream file("data/roads.json");
     
-    if (!file.is_open()) {
+    if (!file.is_open()) 
+    {
         cout << "[ERROR] Could not open roads.json!" << endl;
         return;
     }
@@ -48,9 +56,11 @@ void loadRoads(Graph& graph) {
     json data;
     file >> data;
     
-    for (auto& r : data["roads"]) {
+    for (auto& r : data["roads"]) 
+    {
         int from = r["from"];
         int to = r["to"];
+    
         double distance = r["distance"];
         double time = r["base_time"];
         
@@ -58,11 +68,13 @@ void loadRoads(Graph& graph) {
     }
     
     file.close();
+ 
     cout << "[OK] Loaded " << data["roads"].size() << " roads from JSON" << endl;
 }
 
 // Display menu
-void displayMenu() {
+void displayMenu() 
+{
     cout << "\n========================================" << endl;
     cout << "   SMART TRAFFIC ROUTE OPTIMIZER       " << endl;
     cout << "========================================" << endl;
@@ -76,7 +88,8 @@ void displayMenu() {
     cout << "Enter choice: ";
 }
 
-int main() {
+int main() 
+{
     // Initialize data structures
     BTree btree;
     HashTable hashtable;
@@ -97,22 +110,28 @@ int main() {
     
     // Main loop
     int choice;
-    do {
+    do 
+    {
         displayMenu();
         cin >> choice;
         cin.ignore(); // Clear newline
         
-        switch (choice) {
-            case 1: {
+        switch (choice) 
+        {
+            case 1: 
+            {
                 // Search by name
                 string name;
                 cout << "\nEnter junction name: ";
                 getline(cin, name);
                 
                 int id = btree.search(name);
-                if (id != -1) {
+                if (id != -1) 
+                {
                     Junction* j = hashtable.search(id);
-                    if (j) {
+                    
+                    if (j) 
+                    {
                         cout << "\n>>> Junction Details:" << endl;
                         cout << "  ID: " << j->id << endl;
                         cout << "  Name: " << j->name << endl;
@@ -120,17 +139,22 @@ int main() {
                              << j->lng << " E" << endl;
                     }
                 }
+
                 break;
             }
             
-            case 2: {
+            case 2: 
+            {
                 // Get details by ID
                 int id;
+
                 cout << "\nEnter junction ID: ";
                 cin >> id;
                 
                 Junction* j = hashtable.search(id);
-                if (j) {
+            
+                if (j) 
+                {
                     cout << "\n>>> Junction Details:" << endl;
                     cout << "  ID: " << j->id << endl;
                     cout << "  Name: " << j->name << endl;
@@ -140,9 +164,11 @@ int main() {
                 break;
             }
             
-            case 3: {
+            case 3: 
+            {
                 // Find shortest path
                 int source, dest;
+            
                 cout << "\nEnter source junction ID: ";
                 cin >> source;
                 cout << "Enter destination junction ID: ";
@@ -150,20 +176,27 @@ int main() {
                 
                 auto [path, time] = graph.dijkstra(source, dest);
                 
-                if (!path.empty()) {
+                if (!path.empty()) 
+                {
                     cout << "\n>>> Shortest Route Found!" << endl;
                     cout << "========================================" << endl;
                     cout << "Path: ";
                     
-                    for (size_t i = 0; i < path.size(); i++) {
+                    for (size_t i = 0; i < path.size(); i++) 
+                    {
                         Junction* j = hashtable.search(path[i]);
-                        if (j) {
+                        if (j) 
+                        {
                             cout << j->name;
-                        } else {
+                        }
+                        
+                        else
+                        {
                             cout << path[i];
                         }
                         
-                        if (i < path.size() - 1) {
+                        if (i < path.size() - 1) 
+                        {
                             cout << " -> ";
                         }
                     }
@@ -173,13 +206,17 @@ int main() {
                     cout << "Estimated Distance: " << (time * 0.5) 
                          << " km" << endl;
                     cout << "========================================" << endl;
-                } else {
+                }
+                
+                else
+                {
                     cout << "\n[ERROR] No path found between these junctions!" << endl;
                 }
                 break;
             }
             
-            case 4: {
+            case 4: 
+            {
                 // Display all structures
                 btree.display();
                 hashtable.display();
@@ -187,7 +224,8 @@ int main() {
                 break;
             }
             
-            case 5: {
+            case 5: 
+            {
                 // Update traffic
                 int from, to;
                 double multiplier;
@@ -218,3 +256,4 @@ int main() {
     
     return 0;
 }
+

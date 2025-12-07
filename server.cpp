@@ -81,18 +81,14 @@ int main() {
     // Enable CORS for frontend
     svr.set_base_dir("./frontend");
     
-    // CORS middleware
-    svr.set_pre_routing_handler([](const httplib::Request &req, httplib::Response &res) {
-        res.set_header("Access-Control-Allow-Origin", "*");
-        res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-        res.set_header("Access-Control-Allow-Headers", "Content-Type");
-        return httplib::Server::HandlerResponse::Unhandled;
-    });
-    
     // ========================================
     // ENDPOINT 1: Get all junctions
     // ========================================
     svr.Get("/api/junctions", [](const httplib::Request &req, httplib::Response &res) {
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        res.set_header("Access-Control-Allow-Headers", "Content-Type");
+        
         ifstream file("data/junctions.json");
         json data;
         file >> data;
@@ -174,7 +170,18 @@ int main() {
     // ========================================
     // ENDPOINT 4: Find shortest path
     // ========================================
+    svr.Options("/api/path", [](const httplib::Request &req, httplib::Response &res) {
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        res.set_header("Access-Control-Allow-Headers", "Content-Type");
+        res.status = 204;
+    });
+    
     svr.Post("/api/path", [](const httplib::Request &req, httplib::Response &res) {
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        res.set_header("Access-Control-Allow-Headers", "Content-Type");
+        
         json requestData = json::parse(req.body);
         
         int source = requestData["source"];
@@ -219,7 +226,18 @@ int main() {
     // ========================================
     // ENDPOINT 5: Update traffic
     // ========================================
+    svr.Options("/api/traffic", [](const httplib::Request &req, httplib::Response &res) {
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        res.set_header("Access-Control-Allow-Headers", "Content-Type");
+        res.status = 204;
+    });
+    
     svr.Post("/api/traffic", [](const httplib::Request &req, httplib::Response &res) {
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        res.set_header("Access-Control-Allow-Headers", "Content-Type");
+        
         json requestData = json::parse(req.body);
         
         int from = requestData["from"];
@@ -243,6 +261,10 @@ int main() {
     // ENDPOINT 6: Health check
     // ========================================
     svr.Get("/api/health", [](const httplib::Request &req, httplib::Response &res) {
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        res.set_header("Access-Control-Allow-Headers", "Content-Type");
+        
         json response = {
             {"status", "OK"},
             {"message", "Server is running"},
