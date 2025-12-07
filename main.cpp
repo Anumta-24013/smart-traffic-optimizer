@@ -4,40 +4,61 @@
 #include "src/btree.h"
 #include "src/hashtable.h"
 #include "src/graph.h"
+#include "include/json.hpp"
 
 using namespace std;
+using json = nlohmann::json;
 
-// Load junctions from JSON (manual parsing for simplicity)
+// Load junctions from JSON file
 void loadJunctions(BTree& btree, HashTable& hashtable) {
-    // Hardcoded for now (you can parse JSON later)
-    vector<Junction> junctions = {
-        {1, "Liberty Chowk", 31.5096, 74.3442},
-        {2, "Kalma Chowk", 31.5204, 74.3587},
-        {3, "Mall Road", 31.5656, 74.3242},
-        {4, "Jail Road", 31.5497, 74.3436},
-        {5, "Township", 31.4697, 74.3973},
-        {6, "Gulberg Main", 31.5203, 74.3587},
-        {7, "Ferozepur Road", 31.4343, 74.2963},
-        {8, "Model Town", 31.4843, 74.3154}
-    };
+    ifstream file("data/junctions.json");
     
-    for (auto& j : junctions) {
-        btree.insert(j.name, j.id);
-        hashtable.insert(j);
+    if (!file.is_open()) {
+        cout << "[ERROR] Could not open junctions.json!" << endl;
+        return;
     }
+    
+    json data;
+    file >> data;
+    
+    for (auto& j : data["junctions"]) {
+        int id = j["id"];
+        string name = j["name"];
+        double lat = j["lat"];
+        double lng = j["lng"];
+        
+        Junction junction(id, name, lat, lng);
+        btree.insert(name, id);
+        hashtable.insert(junction);
+    }
+    
+    file.close();
+    cout << "[OK] Loaded " << data["junctions"].size() << " junctions from JSON" << endl;
 }
 
-// Load roads from data
+// Load roads from JSON file
 void loadRoads(Graph& graph) {
-    // Hardcoded road connections
-    graph.addEdge(1, 2, 3.5, 8);   // Liberty <-> Kalma
-    graph.addEdge(2, 3, 5.2, 12);  // Kalma <-> Mall
-    graph.addEdge(1, 4, 2.1, 5);   // Liberty <-> Jail
-    graph.addEdge(4, 5, 8.3, 18);  // Jail <-> Township
-    graph.addEdge(2, 5, 6.7, 15);  // Kalma <-> Township
-    graph.addEdge(2, 6, 1.2, 3);   // Kalma <-> Gulberg
-    graph.addEdge(6, 8, 4.5, 10);  // Gulberg <-> Model Town
-    graph.addEdge(7, 5, 7.8, 16);  // Ferozepur <-> Township
+    ifstream file("data/roads.json");
+    
+    if (!file.is_open()) {
+        cout << "[ERROR] Could not open roads.json!" << endl;
+        return;
+    }
+    
+    json data;
+    file >> data;
+    
+    for (auto& r : data["roads"]) {
+        int from = r["from"];
+        int to = r["to"];
+        double distance = r["distance"];
+        double time = r["base_time"];
+        
+        graph.addEdge(from, to, distance, time);
+    }
+    
+    file.close();
+    cout << "[OK] Loaded " << data["roads"].size() << " roads from JSON" << endl;
 }
 
 // Display menu
@@ -65,11 +86,11 @@ int main() {
     cout << "  INITIALIZING TRAFFIC OPTIMIZER...    " << endl;
     cout << "========================================\n" << endl;
     
-    // Load data
-    cout << "Loading junctions..." << endl;
+    // Load data from JSON files
+    cout << "Loading junctions from JSON..." << endl;
     loadJunctions(btree, hashtable);
     
-    cout << "\nLoading roads..." << endl;
+    cout << "\nLoading roads from JSON..." << endl;
     loadRoads(graph);
     
     cout << "\n[OK] System Ready!" << endl;
