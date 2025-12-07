@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE = 'http://localhost:8080/api';
+const API_BASE = 'http://13.60.243.32:8080/api';
 
 // Global state
 let junctions = [];
