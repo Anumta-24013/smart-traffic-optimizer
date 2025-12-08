@@ -1,5 +1,5 @@
 // API Configuration
-const API_URL = 'http://13.60.243.32:8080/api';
+const API_URL = 'http://13.60.243.32:8080';
 
 // Global state
 let junctions = [];
