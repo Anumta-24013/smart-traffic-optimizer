@@ -1,5 +1,8 @@
 // API Configuration
-const API_BASE = 'http://13.60.243.32:8080/api';
+
+//const API_BASE = 'http://13.60.243.32:8080/api';
+
+const API_BASE = 'https://unlustrous-dacia-unforgivably.ngrok-free.app';
 
 // Global state
 let junctions = [];
