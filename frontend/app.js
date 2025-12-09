@@ -1,4 +1,4 @@
-// API Configuration
+// API Configuration - UPDATED FOR AWS
 const API_BASE = 'http://13.60.243.32:8080/api';
 
 // Global state
@@ -22,12 +22,12 @@ async function checkServerStatus() {
         
         if (data.status === 'OK') {
             statusEl.classList.add('online');
-            statusText.textContent = `Server Online • ${data.junctions} Junctions`;
+            statusText.textContent = `AWS Server Online • ${data.junctions} Junctions`;
         }
     } catch (error) {
         statusEl.classList.add('offline');
         statusText.textContent = 'Server Offline';
-        showToast('Cannot connect to server. Make sure server.exe is running!', 'error');
+        showToast('Cannot connect to AWS server!', 'error');
     }
 }
 
@@ -41,7 +41,7 @@ async function loadJunctions() {
         populateDropdowns();
         displayJunctionsList();
         
-        showToast(`Loaded ${junctions.length} junctions successfully!`, 'success');
+        showToast(`Loaded ${junctions.length} junctions from AWS!`, 'success');
     } catch (error) {
         console.error('Error loading junctions:', error);
         showToast('Failed to load junctions', 'error');
