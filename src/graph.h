@@ -9,17 +9,19 @@
 #include <algorithm>
 using namespace std;
 
-class Graph {
+class Graph 
+{
+
 public:
 
     struct Edge 
     {
         int to;
         double distance;
-        double baseTime;      // ⭐ ORIGINAL time (kabhi change nahi hoga)
-        double currentTime;   // ⭐ TRAFFIC ke saath modified time
+        double baseTime;      
+        double currentTime;   
         
-        // Constructor - dono ko same value se initialize karo
+        // Constructor - dono ko same value se initialize
         Edge(int t, double d, double tm) 
             : to(t), distance(d), baseTime(tm), currentTime(tm) {}
     };
@@ -33,7 +35,8 @@ public:
 
     Graph() : edgeCount(0) {}
     
-    void addEdge(int from, int to, double distance, double time) {
+    void addEdge(int from, int to, double distance, double time) 
+    {
         adjList[from].push_back(Edge(to, distance, time));
         adjList[to].push_back(Edge(from, distance, time));
         edgeCount++;
@@ -42,21 +45,25 @@ public:
              << " (" << distance << "km, " << time << "min)" << endl;
     }
     
-    // ⭐⭐⭐ YEH FUNCTION FIX KARNA THA! ⭐⭐⭐
-    void updateTraffic(int from, int to, double trafficMultiplier) {
+    void updateTraffic(int from, int to, double trafficMultiplier) 
+    {
         // From -> To direction
-        for (auto& edge : adjList[from]) {
-            if (edge.to == to) {
-                // ✅ SAHI: baseTime se calculate karo, currentTime se NAHI!
+        for (auto& edge : adjList[from]) 
+        {
+            if (edge.to == to) 
+            {
+                // baseTime se calculation
                 edge.currentTime = edge.baseTime * trafficMultiplier;
                 break;
             }
         }
         
         // To -> From direction (bidirectional)
-        for (auto& edge : adjList[to]) {
-            if (edge.to == from) {
-                // ✅ SAHI: baseTime se calculate karo
+        for (auto& edge : adjList[to]) 
+        {
+            if (edge.to == from) 
+            {
+                // bestTime se calculation
                 edge.currentTime = edge.baseTime * trafficMultiplier;
                 break;
             }
@@ -66,8 +73,9 @@ public:
              << " (multiplier: " << trafficMultiplier << "x)" << endl;
     }
     
-    // ⭐⭐⭐ DIJKSTRA ME currentTime USE KARO! ⭐⭐⭐
-    pair<vector<int>, double> dijkstra(int source, int dest) {
+    // DIJKSTRA ME currentTime usage ⭐⭐⭐
+    pair<vector<int>, double> dijkstra(int source, int dest) 
+    {
         cout << "\n[Dijkstra] Finding shortest path: " 
              << source << " -> " << dest << endl;
         
@@ -77,31 +85,36 @@ public:
                        vector<pair<double, int>>, 
                        greater<pair<double, int>>> pq;
         
-        for (auto& [node, edges] : adjList) {
+        for (auto& [node, edges] : adjList) 
+        {
             dist[node] = numeric_limits<double>::infinity();
         }
         
         dist[source] = 0;
         pq.push({0, source});
         
-        while (!pq.empty()) {
+        while (!pq.empty()) 
+        {
             auto [currentDist, u] = pq.top();
             pq.pop();
             
-            if (u == dest) {
+            if (u == dest) 
+            {
                 break;
             }
             
-            if (currentDist > dist[u]) {
+            if (currentDist > dist[u]) 
+            {
                 continue;
             }
             
-            for (auto& edge : adjList[u]) {
+            for (auto& edge : adjList[u]) 
+            {
                 int v = edge.to;
-                // ✅ CRITICAL: currentTime use karo, baseTime NAHI!
                 double weight = edge.currentTime;
                 
-                if (dist[u] + weight < dist[v]) {
+                if (dist[u] + weight < dist[v]) 
+                {
                     dist[v] = dist[u] + weight;
                     parent[v] = u;
                     pq.push({dist[v], v});
@@ -109,7 +122,8 @@ public:
             }
         }
         
-        if (dist[dest] == numeric_limits<double>::infinity()) {
+        if (dist[dest] == numeric_limits<double>::infinity()) 
+        {
             cout << "[Dijkstra] No path found!" << endl;
             return {vector<int>(), -1};
         }
@@ -117,10 +131,12 @@ public:
         vector<int> path;
         int current = dest;
         
-        while (current != source) {
+        while (current != source) 
+        {
             path.push_back(current);
             current = parent[current];
         }
+        
         path.push_back(source);
         reverse(path.begin(), path.end());
         
@@ -131,24 +147,31 @@ public:
     }
     
     // Reset all traffic to normal
-    void resetAllTraffic() {
-        for (auto& [junction, edges] : adjList) {
-            for (auto& edge : edges) {
+    void resetAllTraffic()
+    {
+        for (auto& [junction, edges] : adjList) 
+        {
+            for (auto& edge : edges) 
+            {
                 edge.currentTime = edge.baseTime; // Reset to original
             }
         }
         cout << "[Graph] All traffic reset to normal" << endl;
     }
     
-    void display() {
+    void display() 
+    {
         cout << "\n========= GRAPH STRUCTURE ==========" << endl;
         cout << "Total Junctions: " << adjList.size() << endl;
         cout << "Total Edges: " << edgeCount << endl;
         cout << "-----------------------------------" << endl;
         
-        for (auto& [junction, edges] : adjList) {
+        for (auto& [junction, edges] : adjList) 
+        {
             cout << "Junction " << junction << " connects to: ";
-            for (auto& edge : edges) {
+        
+            for (auto& edge : edges) 
+            {
                 cout << "[" << edge.to << ": " << edge.distance 
                      << "km, base:" << edge.baseTime 
                      << "min, current:" << edge.currentTime << "min] ";
