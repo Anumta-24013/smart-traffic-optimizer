@@ -27,15 +27,18 @@ void loadJunctions(BTree& btree, HashTable& hashtable)
     {
         int id = j["id"];
         string name = j["name"];
+    
         double lat = j["lat"];
         double lng = j["lng"];
         
         Junction junction(id, name, lat, lng);
+    
         btree.insert(name, id);
         hashtable.insert(junction);
     }
     
     file.close();
+    
     cout << "[OK] Loaded " << data["junctions"].size() << " junctions from JSON" << endl;
 }
 
@@ -57,6 +60,7 @@ void loadRoads(Graph& graph)
     {
         int from = r["from"];
         int to = r["to"];
+    
         double distance = r["distance"];
         double time = r["base_time"];
         
@@ -64,6 +68,7 @@ void loadRoads(Graph& graph)
     }
     
     file.close();
+ 
     cout << "[OK] Loaded " << data["roads"].size() << " roads from JSON" << endl;
 }
 
@@ -76,12 +81,9 @@ void displayMenu()
     cout << "  1. Search Junction by Name           " << endl;
     cout << "  2. Get Junction Details by ID        " << endl;
     cout << "  3. Find Shortest Path                " << endl;
-    cout << "  4. Update Traffic Condition          " << endl;
-    cout << "  5. View Traffic History (Specific)   " << endl;
-    cout << "  6. View Severe Traffic Roads         " << endl;
-    cout << "  7. View Traffic Analytics            " << endl;
-    cout << "  8. Display All Data Structures       " << endl;
-    cout << "  9. Exit                              " << endl;
+    cout << "  4. Display All Data Structures       " << endl;
+    cout << "  5. Update Traffic Condition          " << endl;
+    cout << "  6. Exit                              " << endl;
     cout << "========================================" << endl;
     cout << "Enter choice: ";
 }
@@ -127,6 +129,7 @@ int main()
                 if (id != -1) 
                 {
                     Junction* j = hashtable.search(id);
+                    
                     if (j) 
                     {
                         cout << "\n>>> Junction Details:" << endl;
@@ -136,6 +139,7 @@ int main()
                              << j->lng << " E" << endl;
                     }
                 }
+
                 break;
             }
             
@@ -143,10 +147,12 @@ int main()
             {
                 // Get details by ID
                 int id;
+
                 cout << "\nEnter junction ID: ";
                 cin >> id;
                 
                 Junction* j = hashtable.search(id);
+            
                 if (j) 
                 {
                     cout << "\n>>> Junction Details:" << endl;
@@ -162,6 +168,7 @@ int main()
             {
                 // Find shortest path
                 int source, dest;
+            
                 cout << "\nEnter source junction ID: ";
                 cin >> source;
                 cout << "Enter destination junction ID: ";
@@ -182,6 +189,7 @@ int main()
                         {
                             cout << j->name;
                         }
+                        
                         else
                         {
                             cout << path[i];
@@ -199,6 +207,7 @@ int main()
                          << " km" << endl;
                     cout << "========================================" << endl;
                 }
+                
                 else
                 {
                     cout << "\n[ERROR] No path found between these junctions!" << endl;
@@ -208,6 +217,15 @@ int main()
             
             case 4: 
             {
+                // Display all structures
+                btree.display();
+                hashtable.display();
+                graph.display();
+                break;
+            }
+            
+            case 5: 
+            {
                 // Update traffic
                 int from, to;
                 double multiplier;
@@ -216,60 +234,15 @@ int main()
                 cin >> from;
                 cout << "Enter road (to junction ID): ";
                 cin >> to;
-                cout << "Enter traffic multiplier (1.0=clear, 2.0=moderate, 3.0=heavy, 5.0=severe): ";
+                cout << "Enter traffic multiplier (1.0=clear, 2.0=moderate, 3.0=heavy): ";
                 cin >> multiplier;
                 
-                // Update in graph
                 graph.updateTraffic(from, to, multiplier);
-                
-                // ⭐ LOG IN B-TREE
-                // Calculate current time based on base time
-                // (We need to get this from graph - simplified here)
-                double baseTime = 10.0; // Default, ideally get from graph
-                double currentTime = baseTime * multiplier;
-                btree.logTrafficUpdate(from, to, multiplier, currentTime);
-                
-                cout << "\n[OK] Traffic updated and logged successfully!" << endl;
+                cout << "\n[OK] Traffic updated successfully!" << endl;
                 break;
             }
             
-            case 5: 
-            {
-                // View traffic history for specific road
-                int from, to;
-                cout << "\nEnter road (from junction ID): ";
-                cin >> from;
-                cout << "Enter road (to junction ID): ";
-                cin >> to;
-                
-                btree.showRoadHistory(from, to);
-                break;
-            }
-            
-            case 6: 
-            {
-                // View severe traffic roads
-                btree.showSevereTrafficRoads();
-                break;
-            }
-            
-            case 7: 
-            {
-                // View traffic analytics
-                btree.showTrafficAnalytics();
-                break;
-            }
-            
-            case 8: 
-            {
-                // Display all structures
-                btree.display();
-                hashtable.display();
-                graph.display();
-                break;
-            }
-            
-            case 9:
+            case 6:
                 cout << "\n========================================" << endl;
                 cout << "  Thank you for using Traffic Optimizer!" << endl;
                 cout << "========================================" << endl;
@@ -279,7 +252,7 @@ int main()
                 cout << "\n[ERROR] Invalid choice! Please try again." << endl;
         }
         
-    } while (choice != 9);
+    } while (choice != 6);
     
     return 0;
 }
