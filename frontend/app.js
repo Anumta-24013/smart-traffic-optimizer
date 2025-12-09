@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 // API Configuration - UPDATED FOR AWS
 const API_BASE = 'http://13.60.243.32:8080/api';
+=======
+// API Configuration
+
+//const API_BASE = 'http://13.60.243.32:8080/api';
+
+const API_BASE = 'https://unlustrous-dacia-unforgivably.ngrok-free.app';
+>>>>>>> 7ab874ac87b5f8ea916f7c891423ff9328964e99
 
 // Global state
 let junctions = [];
