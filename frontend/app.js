@@ -1,13 +1,5 @@
-<<<<<<< HEAD
-// API Configuration - UPDATED FOR AWS
+// API Configuration - AWS Backend
 const API_BASE = 'http://13.60.243.32:8080/api';
-=======
-// API Configuration
-
-//const API_BASE = 'http://13.60.243.32:8080/api';
-
-const API_BASE = 'https://unlustrous-dacia-unforgivably.ngrok-free.app';
->>>>>>> 7ab874ac87b5f8ea916f7c891423ff9328964e99
 
 // Global state
 let junctions = [];
@@ -63,12 +55,10 @@ function populateDropdowns() {
     const trafficFrom = document.getElementById('trafficFrom');
     const trafficTo = document.getElementById('trafficTo');
     
-    // Clear existing options
     [sourceSelect, destSelect, trafficFrom, trafficTo].forEach(select => {
         select.innerHTML = '<option value="">Select...</option>';
     });
     
-    // Add junction options
     junctions.forEach(junction => {
         const option = `<option value="${junction.id}">${junction.name}</option>`;
         sourceSelect.innerHTML += option;
@@ -119,9 +109,7 @@ async function findRoute() {
     try {
         const response = await fetch(`${API_BASE}/path`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 source: parseInt(sourceId),
                 destination: parseInt(destId)
@@ -152,15 +140,12 @@ function displayRoute(data) {
     const totalDistance = document.getElementById('totalDistance');
     const pathDisplay = document.getElementById('pathDisplay');
     
-    // Show results card
     resultsCard.style.display = 'block';
     resultsCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     
-    // Update time and distance
     totalTime.textContent = `${data.totalTime.toFixed(1)} min`;
     totalDistance.textContent = `${data.estimatedDistance.toFixed(1)} km`;
     
-    // Display path
     pathDisplay.innerHTML = data.path.map((junction, index) => {
         const stepHtml = `<div class="path-step">${junction.name}</div>`;
         const arrowHtml = index < data.path.length - 1 ? '<div class="path-arrow">→</div>' : '';
@@ -191,9 +176,7 @@ async function updateTraffic() {
     try {
         const response = await fetch(`${API_BASE}/traffic`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 from: parseInt(fromId),
                 to: parseInt(toId),
@@ -208,7 +191,6 @@ async function updateTraffic() {
             const toName = junctions.find(j => j.id == toId)?.name || toId;
             showToast(`Traffic updated: ${fromName} ↔ ${toName} (${multiplier}x)`, 'success');
             
-            // Reset form
             document.getElementById('trafficFrom').value = '';
             document.getElementById('trafficTo').value = '';
             document.getElementById('trafficLevel').value = '1.0';
@@ -235,5 +217,5 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-// Auto-refresh server status every 30 seconds
+// Auto-refresh server status
 setInterval(checkServerStatus, 30000);
