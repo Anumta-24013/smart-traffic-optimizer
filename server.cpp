@@ -14,7 +14,7 @@ BTree btree;
 Graph graph;
 HashTable hashtable;
 
-// ⭐ CORS Middleware - ADD THIS FUNCTION
+// ⭐ CORS Headers Function
 void enableCORS(Response& res) {
     res.set_header("Access-Control-Allow-Origin", "*");
     res.set_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -74,7 +74,7 @@ int main() {
     std::cout << "Loading data..." << std::endl;
     loadData();
     
-    // ⭐ OPTIONS handler for CORS preflight
+    // ⭐ Handle CORS preflight requests
     svr.Options(".*", [](const Request& req, Response& res) {
         enableCORS(res);
         res.status = 200;
@@ -82,7 +82,7 @@ int main() {
     
     // ⭐ Health check endpoint
     svr.Get("/api/health", [&](const Request& req, Response& res) {
-        enableCORS(res);  // ⭐ ADD CORS
+        enableCORS(res);  // ⭐ IMPORTANT
         
         json response = {
             {"status", "OK"},
@@ -97,13 +97,11 @@ int main() {
     
     // ⭐ Get all junctions
     svr.Get("/api/junctions", [&](const Request& req, Response& res) {
-        enableCORS(res);  // ⭐ ADD CORS
+        enableCORS(res);  // ⭐ IMPORTANT
         
         json response;
         response["junctions"] = json::array();
         
-        // You'll need to modify hashtable to return all junctions
-        // For now, return from stored data
         std::ifstream jFile("data/junctions.json");
         if (jFile.is_open()) {
             json jData;
@@ -119,7 +117,7 @@ int main() {
     
     // ⭐ Find shortest path
     svr.Post("/api/path", [&](const Request& req, Response& res) {
-        enableCORS(res);  // ⭐ ADD CORS
+        enableCORS(res);  // ⭐ IMPORTANT
         
         try {
             auto body = json::parse(req.body);
@@ -144,7 +142,7 @@ int main() {
             response["success"] = true;
             response["path"] = json::array();
             response["totalTime"] = totalTime;
-            response["estimatedDistance"] = totalTime * 0.5; // Rough estimate
+            response["estimatedDistance"] = totalTime * 0.5;
             
             for (int id : path) {
                 Junction* j = hashtable.search(id);
@@ -173,7 +171,7 @@ int main() {
     
     // ⭐ Update traffic
     svr.Post("/api/traffic", [&](const Request& req, Response& res) {
-        enableCORS(res);  // ⭐ ADD CORS
+        enableCORS(res);  // ⭐ IMPORTANT
         
         try {
             auto body = json::parse(req.body);
@@ -203,12 +201,10 @@ int main() {
     });
     
     std::cout << "\n========================================" << std::endl;
-    std::cout << "  SERVER RUNNING ON http://localhost:8080" << std::endl;
+    std::cout << "  SERVER RUNNING ON http://0.0.0.0:8080" << std::endl;
     std::cout << "========================================" << std::endl;
     std::cout << "Available Endpoints:" << std::endl;
     std::cout << "  GET  /api/junctions        - Get all junctions" << std::endl;
-    std::cout << "  GET  /api/search/<name>    - Search by name" << std::endl;
-    std::cout << "  GET  /api/junction/<id>    - Get by ID" << std::endl;
     std::cout << "  POST /api/path             - Find shortest path" << std::endl;
     std::cout << "  POST /api/traffic          - Update traffic" << std::endl;
     std::cout << "  GET  /api/health           - Health check" << std::endl;
