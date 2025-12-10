@@ -1,5 +1,5 @@
 // API Configuration - AWS Backend
-const API_BASE = 'http://13.60.243.32:8080/api';
+const API_BASE = 'https://tribe-walked-continuously-transit.trycloudflare.com';
 
 // Global state
 let junctions = [];
