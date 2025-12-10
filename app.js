@@ -1,5 +1,5 @@
 // API Configuration - AWS Backend
-const API_BASE = 'https://explicitly-referenced-sixth-playstation.trycloudflare.com';
+const API_BASE = 'https://explicitly-referenced-sixth-playstation.trycloudflare.com/api';
 
 // Global state
 let junctions = [];
