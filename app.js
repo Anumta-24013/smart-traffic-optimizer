@@ -1,5 +1,5 @@
 // API Configuration - AWS Backend
-const API_BASE = 'https://tribe-walked-continuously-transit.trycloudflare.com';
+const API_BASE = 'https://significant-kyle-mold-namespace.trycloudflare.com/api';
 
 // Global state
 let junctions = [];
